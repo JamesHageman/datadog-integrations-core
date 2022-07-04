@@ -87,7 +87,7 @@ def models(ctx, check, sync, verbose):
     num_files = 0
 
     license_header_lines = get_license_header().splitlines(True) + ['\n']
-    documentation_header_lines = ['\n'] + get_config_models_documentation().splitlines(True) + ['\n']
+    documentation_header_lines = get_config_models_documentation().splitlines(True) + ['\n']
 
     code_formatter = ModelConsumer.create_code_formatter()
 
@@ -165,7 +165,9 @@ def models(ctx, check, sync, verbose):
                     # validators.py and deprecations.py are custom files, they should only be rendered the first time
                     continue
 
-                expected_model_file_lines.extend(license_header_lines)
+                if not community_check:
+                    expected_model_file_lines.extend(license_header_lines)
+
                 if model_file not in CUSTOM_FILES:
                     expected_model_file_lines.extend(documentation_header_lines)
                 expected_model_file_lines.extend(generated_model_file_lines)
